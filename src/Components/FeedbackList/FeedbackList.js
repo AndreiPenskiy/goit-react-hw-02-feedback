@@ -20,10 +20,20 @@ class FeedbackList extends Component {
     });
   };
 
+  countTotalFeedback = () => {
+    const { good, neutral, bad } = this.state;
+    const total = good + neutral + bad;
+    return total;
+  };
+
+  countPositivePercentage = () => {
+    const { good } = this.state;
+    return Math.round((good / this.countTotalFeedback()) * 100) || 0;
+  };
+
   render() {
     const { good, neutral, bad } = this.state;
-    let total = good + neutral + bad;
-    let positivePercentage = Math.round(good > 0 ? (good / total) * 100 : 0);
+    const total = this.countTotalFeedback();
 
     return (
       <>
@@ -41,7 +51,7 @@ class FeedbackList extends Component {
               neutral={neutral}
               bad={bad}
               total={total}
-              positivePercentage={positivePercentage}
+              positivePercentage={this.countPositivePercentage()}
             />
           ) : (
             <Notification message="There is no feedback" />
